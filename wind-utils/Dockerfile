@@ -6,8 +6,10 @@ COPY --from=trilinos /opt/exawind /opt/exawind
 ARG ENABLE_OPENMP=OFF
 ARG ENABLE_CUDA=OFF
 
+ARG BRANCH=master
+ADD https://api.github.com/repos/exawind/wind-utils/git/refs/heads/${BRANCH} version.json
 RUN (\
-    git clone --depth 1 https://github.com/exawind/wind-utils.git \
+    git clone --depth 1 -b ${BRANCH} https://github.com/exawind/wind-utils.git \
     && cd wind-utils \
     && cmake \
         -Bbuild \
@@ -31,7 +33,7 @@ RUN (\
 FROM exawind/exw-osrun as runner
 
 COPY --from=base /usr/local /usr/local
-COPY --from=trilinos /opt/exawind /opt/exawind
+COPY --from=base /opt/exawind /opt/exawind
 
 RUN (\
     echo "/opt/exawind/lib" > /etc/ld.so.conf.d/exawind.conf \

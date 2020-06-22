@@ -1,7 +1,9 @@
 FROM exawind/exw-dev-deps as base
 
+ARG BRANCH=development
+ADD https://api.github.com/repos/exawind/amr-wind/git/refs/heads/${BRANCH} version.json
 RUN (\
-    git clone --depth 1 --recurse-submodules https://github.com/exawind/amr-wind.git \
+    git clone --depth 1 --recurse-submodules -b ${BRANCH} https://github.com/exawind/amr-wind.git \
     && cd amr-wind \
     && mkdir build \
     && cd build \
