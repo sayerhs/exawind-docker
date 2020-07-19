@@ -1,4 +1,4 @@
-# ExaWind Docker
+# ExaWind Docker images
 
-This repository contains the source code for [ExaWind Docker
-images](https://hub.docker.com/orgs/exawind/repositories).
+This repository contains the build recipes for [ExaWind Docker
+images](https://hub.docker.com/u/exawind).
