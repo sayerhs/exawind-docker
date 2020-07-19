@@ -5,10 +5,6 @@ on:
     - cron: "0 4 * * 0"
   push:
     branches: [ master ]
-    paths:
-      - 'exw-trilinos/**'
-      - 'exw-openfast/**'
-      - 'nalu-wind/**'
 
 jobs:
   trilinos:
