@@ -1,0 +1,47 @@
+name: Deploy to Docker Hub
+
+on:
+  schedule:
+    - cron: "0 4 * * 0"
+  push:
+    branches: [ master ]
+    paths:
+      - 'exw-trilinos/**'
+      - 'exw-openfast/**'
+      - 'nalu-wind/**'
+
+jobs:
+  trilinos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          respository: exawind/exw-trilinos
+          tag_with_sha: true
+          path: ./exw-trilinos
+  openfast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          respository: exawind/exw-openfast
+          tag_with_sha: true
+          path: ./exw-openfast
+  nalu-wind:
+    needs: [ trilinos, openfast ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          respository: exawind/nalu-wind
+          tag_with_sha: true
+          path: ./nalu-wind
