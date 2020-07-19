@@ -1,6 +1,6 @@
-FROM exawind/exw-tioga AS tioga
-FROM exawind/exw-openfast AS openfast
-FROM exawind/exw-trilinos as trilinos
+FROM exawind/exw-tioga:latest AS tioga
+FROM exawind/exw-openfast:latest AS openfast
+FROM exawind/exw-trilinos:latest AS trilinos
 
 FROM exawind/exw-dev-deps as base
 

@@ -9,39 +9,54 @@ on:
       - 'exw-trilinos/**'
       - 'exw-openfast/**'
       - 'nalu-wind/**'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   trilinos:
     runs-on: ubuntu-latest
     steps:
+      - name: Timestamp
+        id: exw_date
+        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
       - uses: actions/checkout@v2
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           respository: exawind/exw-trilinos
-          tag_with_sha: true
           path: ./exw-trilinos
+          tags: ${{ steps.exw_date.outputs.date }}
   openfast:
     runs-on: ubuntu-latest
     steps:
+      - name: Timestamp
+        id: exw_date
+        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
       - uses: actions/checkout@v2
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           respository: exawind/exw-openfast
-          tag_with_sha: true
           path: ./exw-openfast
+          tags: ${{ steps.exw_date.outputs.date }}
   nalu-wind:
     needs: [ trilinos, openfast ]
     runs-on: ubuntu-latest
     steps:
+      - name: Timestamp
+        id: exw_date
+        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
       - uses: actions/checkout@v2
+      - name: Update nalu-wind docker
+        working-directory: ./nalu-wind
+        run: |
+          sed -i -e "s/exw-openfast:latest/exw-openfast:$(date +%Y-%m-%d)/" Dockerfile
+          sed -i -e "s/exw-trilinos:latest/exw-trilinos:$(date +%Y-%m-%d)/" Dockerfile
       - uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           respository: exawind/nalu-wind
-          tag_with_sha: true
           path: ./nalu-wind
+          tags: ${{ steps.exw_date.outputs.date }}
