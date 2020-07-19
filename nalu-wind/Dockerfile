@@ -19,7 +19,7 @@ RUN (\
        -DCMAKE_PREFIX_PATH=/opt/exawind \
        -DCMAKE_INSTALL_PREFIX=/opt/exawind \
        -DBUILD_SHARED_LIBS=ON \
-       -DENABLE_HYPRE=ON -DENABLE_TIOGA=ON -DENABLE_OPENFAST=ON
+       -DENABLE_HYPRE=ON -DENABLE_TIOGA=ON -DENABLE_OPENFAST=ON \
        -G Ninja . \
     && cd build \
     && ninja -j$(nproc) \
