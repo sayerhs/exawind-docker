@@ -23,7 +23,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          respository: exawind/exw-trilinos
+          repository: exawind/exw-trilinos
           path: ./exw-trilinos
           tags: ${{ steps.exw_date.outputs.date }}
   openfast:
@@ -37,7 +37,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          respository: exawind/exw-openfast
+          repository: exawind/exw-openfast
           path: ./exw-openfast
           tags: ${{ steps.exw_date.outputs.date }}
   nalu-wind:
@@ -57,6 +57,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          respository: exawind/nalu-wind
+          repository: exawind/nalu-wind
           path: ./nalu-wind
           tags: ${{ steps.exw_date.outputs.date }}
