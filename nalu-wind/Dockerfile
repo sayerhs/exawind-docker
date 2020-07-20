@@ -38,6 +38,7 @@ COPY --from=base /usr/local /usr/local
 COPY --from=tioga /opt/exawind /opt/exawind
 COPY --from=openfast /opt/exawind /opt/exawind
 COPY --from=trilinos /opt/exawind /opt/exawind
+COPY --from=base /opt/exawind /opt/exawind
 
 RUN (\
     echo "/opt/exawind/lib" > /etc/ld.so.conf.d/exawind.conf \
