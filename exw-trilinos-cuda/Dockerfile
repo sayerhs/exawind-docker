@@ -9,6 +9,8 @@ RUN (\
     && mkdir build \
     && cd build \
     && /cmake-configure.sh \
+    && export NVCC_WRAPPER_DEFAULT_COMPILER=$(which g++) \
+    && export OMPI_CXX=$(which nvcc_wrapper) \
     && ninja -j$(nproc) \
     && ninja install \
     && cd ../.. \
