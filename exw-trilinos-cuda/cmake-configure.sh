@@ -1,0 +1,1 @@
+../exw-trilinos/cmake-configure.sh
