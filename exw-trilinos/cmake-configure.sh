@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [ "${ENABLE_CUDA:-OFF}" = "ON" ] ; then
+    export NVCC_WRAPPER_DEFAULT_COMPILER=$(which g++)
+    export OMPI_CXX=$(which nvcc_wrapper)
+fi
+
 cmake_cmd=(
     cmake
     -DCMAKE_INSTALL_PREFIX=/opt/exawind
     -DBUILD_SHARED_LIBS:BOOL=ON
-    -DKOKKOS_ARCH_NONE=ON
+    -DKOKKOS_ARCH_VOLTA70=${ENABLE_CUDA}
     -DMPI_USE_COMPILER_WRAPPERS:BOOL=ON
     -DTrilinos_ENABLE_OpenMP:BOOL=${ENABLE_OPENMP}
     -DKokkos_ENABLE_OPENMP:BOOL=${ENABLE_OPENMP}
@@ -49,10 +54,6 @@ cmake_cmd=(
     -DTrilinos_ENABLE_STK:BOOL=ON
     -DTrilinos_ENABLE_Gtest:BOOL=ON
     -DTrilinos_ENABLE_SEACASExodus:BOOL=ON
-    -DTrilinos_ENABLE_SEACASEpu:BOOL=ON
-    -DTrilinos_ENABLE_SEACASExodiff:BOOL=ON
-    -DTrilinos_ENABLE_SEACASNemspread:BOOL=ON
-    -DTrilinos_ENABLE_SEACASNemslice:BOOL=ON
     -DTrilinos_ENABLE_SEACASIoss:BOOL=ON
     -DTPL_ENABLE_MPI:BOOL=ON
     -DTPL_ENABLE_Boost:BOOL=ON

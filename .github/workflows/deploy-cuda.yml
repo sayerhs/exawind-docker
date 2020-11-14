@@ -1,0 +1,29 @@
+name: Deploy CUDA packages to Docker Hub
+
+on:
+  schedule:
+    - cron: "0 4 * * 0"
+  push:
+    branches: [ master ]
+    paths:
+      - 'exw-trilinos/**'
+      - 'exw-openfast/**'
+      - 'nalu-wind/**'
+      - '.github/workflows/deploy-cuda.yml'
+
+jobs:
+  trilinos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Timestamp
+        id: exw_date
+        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: exawind/exw-trilinos-cuda
+          path: ./exw-trilinos
+          file: ./Dockerfile.cuda
+          tags: ${{ steps.exw_date.outputs.date }}
