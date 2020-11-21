@@ -16,7 +16,6 @@ RUN (\
     && cd ../.. \
     && rm -rf trilinos \
     && cd /opt/exawind/lib \
-    && ls *so* | xargs strip -s \
     && echo "/opt/exawind/lib" > /etc/ld.so.conf.d/exawind.conf \
     && ldconfig \
     )
