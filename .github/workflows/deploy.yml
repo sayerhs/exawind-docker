@@ -26,22 +26,8 @@ jobs:
           repository: exawind/exw-trilinos
           path: ./exw-trilinos
           tags: ${{ steps.exw_date.outputs.date }}
-  openfast:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Timestamp
-        id: exw_date
-        run: echo "::set-output name=date::$(date +%Y-%m-%d)"
-      - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: exawind/exw-openfast
-          path: ./exw-openfast
-          tags: ${{ steps.exw_date.outputs.date }}
   nalu-wind:
-    needs: [ trilinos, openfast ]
+    needs: [ trilinos ]
     runs-on: ubuntu-latest
     steps:
       - name: Timestamp
@@ -51,7 +37,6 @@ jobs:
       - name: Update nalu-wind docker
         working-directory: ./nalu-wind
         run: |
-          sed -i -e "s/exw-openfast:latest/exw-openfast:$(date +%Y-%m-%d)/" Dockerfile
           sed -i -e "s/exw-trilinos:latest/exw-trilinos:$(date +%Y-%m-%d)/" Dockerfile
       - uses: docker/build-push-action@v1
         with:
